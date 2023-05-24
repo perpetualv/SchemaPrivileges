@@ -10,10 +10,10 @@ Oracle Database 23c fixes this issue once and for all – you can still choose t
 Users can grant schema level privileges on their own schema without having any special privileges. In order to grant schema-level privileges on someone else’s schema you’ll need either the new GRANT ANY SCHEMA or the GRANT ANY PRIVILEGE system privilege.
 To see which schema privileges have been granted, consult the new DBA_SCHEMA_PRIVS view. There are also ROLE_SCHEMA_PRIVS, USER_SCHEMA_PRIVS, and SESSION_SCHEMA_PRIVS views.
 
-# Tutorial
+## Tutorial
 This directory includes the tutorials related to Database 23c schema privileges. The tutorial script walks you through how to grant, use, and monitor the privileges.
 
-# Documentation
+## Documentation
 
 See the Database 23c Security guide [Managing Schema Privileges](https://docs.oracle.com/en/database/oracle/oracle-database/23/dbseg/configuring-privilege-and-role-authorization.html#GUID-483D04AF-BC5B-4B3D-9D9A-1D2C3CE8F12F) for details on working with schema privileges
 
