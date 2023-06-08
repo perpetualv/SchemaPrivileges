@@ -83,6 +83,24 @@ cle scre
 prompt
 prompt ** Working with Schema-level privileges**
 prompt
+prompt During this tutorial you will create two users. What password should 
+prompt we use for those two users?
+prompt Enter the password to use &&PASSWORD
+prompt
+prompt During this tutorial we will connect and reconnect to 
+prompt this database several times. Which TNS Alias should we use 
+prompt for the connection?  &&DATABASE_ALIAS
+prompt
+prompt Lets test that the password you gave us meets your own 
+prompt password complexity standards by creating a dummy user.
+prompt What username should we use? &&DUMMY_USER_NAME
+
+create user &&DUMMY_USER_NAME identified by &&PASSWORD;
+prompt  If the create user statement failed, please either adjust the username 
+prompt  to an unused username, or the password to meet your systems 
+prompt password complexity rules. Click enter to continue, <ctrl>-c to exit and 
+pause retry.
+drop user &&DUMMY_USER_NAME;
 
 -- Do cleanup for previous run (if any).
 --
@@ -103,8 +121,8 @@ pause  Press enter to continue,
 
 -- Create users and a few tables for the test.
 --
-CREATE USER APP_SCHEMA identified by ORacle__123;
-CREATE USER APP_USER identified by ORacle__123;
+CREATE USER APP_SCHEMA identified by &&PASSWORD;
+CREATE USER APP_USER identified by &&PASSWORD;
 grant create session to APP_USER;
 grant create session, create table, unlimited tablespace to APP_SCHEMA;
 
@@ -127,11 +145,10 @@ prompt Step 2: Connect as APP_USER and verify you can not see data in APP_SCHEMA
 prompt ==================================================
 prompt
 prompt
-prompt ** When prompted, enter the TNS alias of the database you wish to 
-prompt connect to for this demo
+pause Press enter to continue
 prompt
 prompt connect APP_USER@DATABASE_ALIAS
-connect APP_USER/ORacle__123@&DATABASE_ALIAS
+connect APP_USER/&&PASSWORD@&DATABASE_ALIAS
 set echo on
 select * from APP_SCHEMA.DATA1;
 select * from APP_SCHEMA.DATA2;
@@ -139,23 +156,20 @@ set echo off
 
 
 prompt ==================================================
-prompt APP_USER could not select from the tables because
+prompt APP_USER could not select from the APP_SCHEMA tables because
 prompt the user had no privileges on the objects or schema
+pause Press enter to continue
 prompt
 prompt Step 3: Grant schema privileges to APP_USER
 prompt Now we will switch to APP_SCHEMA 
 prompt and give APP_USER permission view data in APP_SCHEMA
 prompt ==================================================
 prompt
-prompt
-prompt ** When prompted, enter the TNS alias of the database you wish to 
-prompt connect to for this demo
-prompt
 prompt connect APP_SCHEMA@DATABASE_ALIAS
-connect APP_SCHEMA/ORacle__123@&DATABASE_ALIAS
-prompt *****
-prompt ***** Pay close attention to the next statement - THIS is the new feature!
-prompt *****
+connect APP_SCHEMA/&&PASSWORD@&&DATABASE_ALIAS
+prompt **********
+prompt ********** Pay close attention to the next statement - THIS is the new feature!
+prompt **********
 set echo on
 grant select any table on schema app_schema to app_user;
 set echo off
@@ -163,25 +177,29 @@ set echo off
 prompt ==================================================
 prompt APP_USER should now be able to see all data in APP_SCEMA
 prompt
+pause Press enter to continue
+prompt
 prompt Step 4: Test the schema privileges
 prompt Lets verify that APP_USER can now view data in APP_SCHEMA
 prompt ==================================================
 prompt
-prompt
-prompt ** When prompted, enter the TNS alias of the database you wish to
-prompt  connect to for this demo
-prompt
 prompt connect APP_USER@DATABASE_ALIAS
-connect APP_USER/ORacle__123@&DATABASE_ALIAS
+connect APP_USER/&&PASSWORD@&DATABASE_ALIAS
 set echo on
 select * from session_schema_privs;
+prompt
+prompt Notice that APP_USER has session privileges 
+prompt to SELECT ANYT TABLE from the APP_SCHEMA schema
+pause Press enter to continue
 select * from APP_SCHEMA.DATA1;
 select * from APP_SCHEMA.DATA2;
 set echo off
 
 prompt ==================================================
-prompt Here is the good part - when APP_SCHEMA adds a new table
+prompt Here comes the good part - when APP_SCHEMA adds a new table
 prompt APP_USER should automatically have access to the new table
+prompt
+pause Press enter to continue
 prompt
 prompt Step 5: Create a new table in APP_SCHEMA
 prompt Now we will switch to APP_SCHEMA and create a new table. We do not 
@@ -189,12 +207,8 @@ prompt need to worry about granting APP_USER permission to select from the table
 prompt because we have permission to select from the entire schema
 prompt ==================================================
 prompt
-prompt
-prompt ** When prompted, enter the TNS alias of the database you wish to
-prompt  connect to for this demo
-prompt
 prompt connect APP_SCHEMA@DATABASE_ALIAS
-connect APP_SCHEMA/ORacle__123@&DATABASE_ALIAS
+connect APP_SCHEMA/&&PASSWORD@&DATABASE_ALIAS
 set echo on
 CREATE TABLE APP_SCHEMA.DATA3
   (country    VARCHAR2(255));
@@ -205,16 +219,15 @@ COMMIT;
 set echo off
 
 prompt ==================================================
+pause Press enter to continue
+prompt
 prompt Step 6: Test the schema privileges again
 prompt Lets verify that APP_USER can see the new table added to APP_SCHEMA
 prompt ==================================================
-prompt
-prompt
-prompt ** When prompted, enter the TNS alias of the database you wish to 
-prompt connect to for this demo
+
 prompt
 prompt connect APP_USER@DATABASE_ALIAS
-connect APP_USER/ORacle__123@&DATABASE_ALIAS
+connect APP_USER/&&PASSWORD@&DATABASE_ALIAS
 set echo on
 select * from APP_SCHEMA.DATA3;
 set echo off
