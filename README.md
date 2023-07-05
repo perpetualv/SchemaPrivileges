@@ -7,7 +7,7 @@ One of the most-requested enhancements for the Oracle Database is granting privi
 The second choice is obviously sub-optimal – you are throwing the fundamental security concept of least privilege out of the window when you grant the ability to select from every table in the database!
 The first choice can also be sub-optimal – when the application adds new objects to the schema, you must remember to make corresponding privilege grants that reflect those changes. 
 Oracle Database 23c fixes this issue once and for all – you can still choose to do individual grants for tables and views, or * ANY system privilege grants, but 23c also introduces a new SCHEMA level grant – if you GRANT SELECT ANY TABLE ON SCHEMA HR TO BOB; then when Bob logs in he can see all tables and views in the HR schema. And if a new table is added to the schema, Bob instantly has access to that new table.
-Users can grant schema level privileges on their own schema without having any special privileges. In order to grant schema-level privileges on someone else’s schema you’ll need either the new GRANT ANY SCHEMA or the GRANT ANY PRIVILEGE system privilege.
+Users can grant schema level privileges on their own schema without having any special privileges. In order to grant schema-level privileges on someone else’s schema you’ll need either the new GRANT ANY SCHEMA PRIVILEGE or the GRANT ANY PRIVILEGE system privilege.
 To see which schema privileges have been granted, consult the new DBA_SCHEMA_PRIVS view. There are also ROLE_SCHEMA_PRIVS, USER_SCHEMA_PRIVS, and SESSION_SCHEMA_PRIVS views.
 
 ## Tutorial
